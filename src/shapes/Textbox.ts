@@ -136,6 +136,14 @@ export class Textbox<
     this.dynamicMinWidth = 0;
     // wrap lines
     this._styleMap = this._generateStyleMap(this._splitText());
+
+    if (!this.splitByGrapheme) {
+      this.width = 0;
+      for (var i = 0; i < this._textLines.length; i++) {
+        this.width = Math.max(this.measureLine(i).width, this.width);
+      }
+    }
+
     // if after wrapping, the width is smaller than dynamicMinWidth, change the width and re-wrap
     if (this.dynamicMinWidth > this.width) {
       this._set('width', this.dynamicMinWidth);
@@ -532,7 +540,7 @@ export class Textbox<
    */
   _splitTextIntoLines(text: string) {
     const newText = super._splitTextIntoLines(text),
-      graphemeLines = this._wrapText(newText.lines, this.width),
+      graphemeLines = this._wrapText(newText.lines, this.splitByGrapheme? this.width : 99999999),
       lines = new Array(graphemeLines.length);
     for (let i = 0; i < graphemeLines.length; i++) {
       lines[i] = graphemeLines[i].join('');
