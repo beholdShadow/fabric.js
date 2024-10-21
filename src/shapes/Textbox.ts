@@ -145,9 +145,8 @@ export class Textbox<
     }
 
     // if after wrapping, the width is smaller than dynamicMinWidth, change the width and re-wrap
-    if (this.dynamicMinWidth > this.width) {
-      this._set('width', this.dynamicMinWidth);
-    }
+    this._set('width', Math.max(this.width, this.getMinWidth()));
+
     if (this.textAlign.includes(JUSTIFY)) {
       // once text is measured we need to make space fatter to make justified text.
       this.enlargeSpaces();
